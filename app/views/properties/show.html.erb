@@ -25,9 +25,10 @@
 <%= @property.memo %>
 </p>
 <hr>
+<% n = 0 %>
 <% @nearest_stations.each do |nearest_station| %>
   <% if @property.nearest_stations.any? %>
-
+  <h3>最寄り駅<%= n += 1 %></h3>
     <p>
     <strong>路線名</strong>
     <%= nearest_station.route %>

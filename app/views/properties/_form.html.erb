@@ -38,7 +38,9 @@
 
   <hr>
 
+  <% n = 0 %>
   <%= form.fields_for :nearest_stations do |nearest_station| %>
+  <h3>最寄り駅<%= n += 1 %></h3>
     <div class="field">
       <%= nearest_station.label :路線名 %>
       <%= nearest_station.text_field :route %>
@@ -52,7 +54,6 @@
       <%= nearest_station.text_field :time %>分
     </div>
   <% end %>
-
   <div class="actions">
     <%= form.submit '登録する' %>
   </div>
