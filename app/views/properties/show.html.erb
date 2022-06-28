@@ -1,4 +1,49 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_property_path(@property) %> |
-<%= link_to 'Back', properties_path %>
+<p>
+<strong>物件名:</strong>
+<%= @property.name %>
+</p>
+
+<p>
+<strong>賃料:</strong>
+<%= @property.price %>
+</p>
+
+<p>
+<strong>住所:</strong>
+<%= @property.address %>
+</p>
+
+<p>
+<strong>築年数</strong>
+<%= @property.age %>
+</p>
+
+<p>
+<strong>備考</strong>
+<%= @property.memo %>
+</p>
+<hr>
+<% @nearest_stations.each do |nearest_station| %>
+  <% if @property.nearest_stations.any? %>
+
+    <p>
+    <strong>路線名</strong>
+    <%= nearest_station.route %>
+    </p>
+
+    <p>
+    <strong>駅名</strong>
+    <%= nearest_station.station %>
+    </p>
+
+    <p>
+    <strong>徒歩分数</strong>
+    <%= nearest_station.time %>
+    </p>
+
+  <% end %>
+<% end %>
+<%= link_to '編集', edit_property_path(@property) %> |
+<%= link_to '戻る', properties_path %>

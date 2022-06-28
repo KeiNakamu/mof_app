@@ -8,42 +8,41 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1 or /properties/1.json
   def show
+    @nearest_stations = @property.nearest_stations
   end
 
   # GET /properties/new
   def new
     @property = Property.new
+
+    2.times { @property.nearest_stations.build}
   end
 
   # GET /properties/1/edit
   def edit
+    @property.nearest_stations.build
   end
 
   # POST /properties or /properties.json
   def create
     @property = Property.new(property_params)
-
-    respond_to do |format|
+    if params[:back]
+      render :new
+    else
       if @property.save
-        format.html { redirect_to property_url(@property), notice: "Property was successfully created." }
-        format.json { render :show, status: :created, location: @property }
+        redirect_to properties_path, notice: "登録しました"
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @property.errors, status: :unprocessable_entity }
+        render :new
       end
     end
   end
 
   # PATCH/PUT /properties/1 or /properties/1.json
   def update
-    respond_to do |format|
-      if @property.update(property_params)
-        format.html { redirect_to property_url(@property), notice: "Property was successfully updated." }
-        format.json { render :show, status: :ok, location: @property }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @property.errors, status: :unprocessable_entity }
-      end
+    if @property.update(property_params)
+      redirect_to properties_path, notice: "物件を編集しました！"
+    else
+      render :edit
     end
   end
 
@@ -52,7 +51,7 @@ class PropertiesController < ApplicationController
     @property.destroy
 
     respond_to do |format|
-      format.html { redirect_to properties_url, notice: "Property was successfully destroyed." }
+      format.html { redirect_to properties_url, notice: "削除しました" }
       format.json { head :no_content }
     end
   end
@@ -65,6 +64,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.fetch(:property, {})
+      params.require(:property).permit(:name, :price, :address, :age, :memo, nearest_stations_attributes: [:station, :route, :time, :property_id, :id])
     end
 end
